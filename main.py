@@ -17,8 +17,10 @@ async def root():
 
 @app.get("/scrape/{url:path}")
 async def scrape(url: str):
+    print(url)
     driver = get_driver()
     driver.get(f"https://{url}")
     title = driver.title
+    print(title)
     driver.quit()
     return {"url": url, "title": title}
