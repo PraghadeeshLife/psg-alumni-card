@@ -11,14 +11,25 @@ WORKDIR /app
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     wget \
-    firefox-esr \
+    bzip2 \
+    libxtst6 \
+    libgtk-3-0 \
+    libx11-xcb1 \
+    libdbus-glib-1-2 \
+    libxt6 \
+    libpci-dev \
     && rm -rf /var/lib/apt/lists/*
 
+# Install Firefox
+RUN wget -O firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=en-US" \
+    && tar xjf firefox.tar.bz2 -C /opt/ \
+    && ln -s /opt/firefox/firefox /usr/bin/firefox \
+    && rm firefox.tar.bz2
+
 # Install geckodriver
-RUN GECKODRIVER_VERSION=$(wget -qO- https://api.github.com/repos/mozilla/geckodriver/releases/latest | grep tag_name | cut -d'"' -f4) \
-    && wget -O /tmp/geckodriver.tar.gz https://github.com/mozilla/geckodriver/releases/download/${GECKODRIVER_VERSION}/geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz \
-    && tar -xzf /tmp/geckodriver.tar.gz -C /usr/local/bin \
-    && rm /tmp/geckodriver.tar.gz \
+RUN wget -O geckodriver.tar.gz https://github.com/mozilla/geckodriver/releases/download/v0.33.0/geckodriver-v0.33.0-linux64.tar.gz \
+    && tar -xzf geckodriver.tar.gz -C /usr/local/bin \
+    && rm geckodriver.tar.gz \
     && chmod +x /usr/local/bin/geckodriver
 
 # Copy the current directory contents into the container at /app
