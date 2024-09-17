@@ -4,11 +4,11 @@ FROM python:3.11-slim
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy the requirements.txt file and install dependencies
+# Copy the requirements.txt file and install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Install Chrome dependencies and Chrome itself
+# Install Chrome dependencies and tools
 RUN apt-get update && apt-get install -y \
     wget \
     unzip \
@@ -19,9 +19,12 @@ RUN apt-get update && apt-get install -y \
     libxss1 \
     libappindicator3-1 \
     fonts-liberation \
+    libatk-bridge2.0-0 \
+    libgtk-3-0 \
+    --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
-# Download and install the latest stable version of Google Chrome
+# Download and install Google Chrome and its dependencies
 RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
     && dpkg -i google-chrome-stable_current_amd64.deb || apt-get -fy install \
     && rm google-chrome-stable_current_amd64.deb
