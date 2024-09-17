@@ -10,7 +10,12 @@ app = FastAPI()
 def scrape():
     # Setup Selenium (Example using Chrome WebDriver)
     options = webdriver.ChromeOptions()
-    options.add_argument('--headless')  # Run in headless mode for deployment
+    options.add_argument('--headless')  # Ensure headless mode for servers
+    options.add_argument('--no-sandbox')  # Bypass OS security model
+    options.add_argument('--disable-dev-shm-usage')  # Overcome limited resource problems
+
+    # Point to the Chromium binary explicitly
+    options.binary_location = "/usr/bin/chromium"
     driver = webdriver.Chrome(options=options)
 
     # Open a webpage

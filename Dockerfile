@@ -1,7 +1,8 @@
 FROM python:3.10-slim
 
-# Install Chromium and dependencies
+# Install curl and other dependencies
 RUN apt-get update && apt-get install -y \
+    curl \
     wget \
     unzip \
     libnss3 \
