@@ -13,13 +13,12 @@ RUN apt-get update && apt-get install -y \
     fonts-liberation \
     libatk-bridge2.0-0 \
     libgtk-3-0 \
+    chromium \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Chromium
-RUN apt-get update && apt-get install -y chromium
-
-# Install ChromeDriver
-RUN CHROMEDRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE) && \
+# Get the Chromium version and install the corresponding ChromeDriver
+RUN CHROME_VERSION=$(chromium --version | grep -oP '\d+\.\d+\.\d+') && \
+    CHROMEDRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION) && \
     wget -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip && \
     unzip /tmp/chromedriver.zip -d /usr/local/bin/ && \
     rm /tmp/chromedriver.zip
