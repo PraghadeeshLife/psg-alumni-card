@@ -1,4 +1,4 @@
 fastapi
 uvicorn
 selenium
-webdriver-manager
+chromedriver-autoinstaller
